@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complexity: تفاصيل الكورس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14123A;
+    --card:#1E1B4B;
+    --card-2:#242058;
+    --indigo:#4338CA;
+    --indigo-bright:#8B7CF6;
+    --cyan:#22D3EE;
+    --paper:#F5F6FB;
+    --slate:#9BA3C4;
+    --line: rgba(245,246,251,0.09);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--paper);}
+  body{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .mono{font-family:'JetBrains Mono', monospace; direction:ltr; unicode-bidi:embed;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  .grid-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 80%);
+            mask-image: linear-gradient(to bottom, black, transparent 80%);
+    pointer-events:none;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:72px 0 60px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero .edges{
+    position:absolute;
+    left:-6%; right:-6%; bottom:-4%;
+    width:112%;
+    opacity:0.6;
+  }
+  .logo-row{
+    display:flex; align-items:center; gap:14px;
+    position:relative; z-index:2;
+    direction:ltr;
+  }
+  .logo-row svg{width:200px; height:auto; display:block;}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--cyan);
+    font-size:13px; letter-spacing:.01em;
+    padding:6px 14px;
+    margin-top:30px;
+    border:1px solid rgba(34,211,238,0.28);
+    border-radius:999px;
+    background:rgba(34,211,238,0.07);
+    position:relative; z-index:2;
+  }
+  .eyebrow::before{content:"//"; color:var(--indigo-bright); font-weight:700; font-family:'JetBrains Mono', monospace;}
+
+  .tagline{
+    margin-top:20px;
+    max-width:620px;
+    font-size:clamp(22px, 3.6vw, 32px);
+    font-weight:700;
+    color:var(--paper);
+    letter-spacing:0;
+    position:relative; z-index:2;
+  }
+  .tagline em{color:var(--indigo-bright); font-style:normal;}
+  .sub{
+    margin-top:14px;
+    max-width:560px;
+    font-size:16px;
+    color:var(--slate);
+    position:relative; z-index:2;
+  }
+
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:14px;
+    margin-top:34px;
+    position:relative; z-index:2;
+  }
+  .meta-chip{
+    display:flex; flex-direction:column; gap:2px;
+    padding:12px 18px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    min-width:120px;
+  }
+  .meta-chip b{font-size:18px; color:var(--paper); font-weight:700;}
+  .meta-chip span{font-size:12px; color:var(--slate);}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:60px 0; border-bottom:1px solid var(--line); position:relative;}
+  .sec-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; color:var(--cyan);
+    letter-spacing:.04em;
+    direction:ltr; unicode-bidi:embed;
+    display:inline-block;
+  }
+  .sec-tag::before{content:"// "; color:var(--slate);}
+  h2{
+    font-size:clamp(25px, 3.6vw, 32px);
+    font-weight:800;
+    margin-top:8px;
+    color:var(--paper);
+  }
+  .sec-desc{
+    color:var(--slate);
+    max-width:600px;
+    margin-top:12px;
+    font-size:15.5px;
+  }
+
+  .lecture-divider{
+    display:flex; align-items:center; gap:14px;
+    margin-top:8px;
+    padding:16px 20px;
+    background:var(--card-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+  .lecture-divider .dot{width:9px; height:9px; border-radius:50%; background:var(--indigo-bright); flex:none;}
+  .lecture-divider p{font-size:14.5px; color:var(--slate);}
+  .lecture-divider b{color:var(--paper); font-weight:700;}
+
+  /* ---------- CURRICULUM TIMELINE ---------- */
+  .timeline{
+    margin-top:42px;
+    position:relative;
+    padding-right:26px;
+    border-right:2px solid rgba(34,211,238,0.30);
+  }
+  .phase{
+    position:relative;
+    padding-bottom:36px;
+  }
+  .phase:last-child{padding-bottom:0;}
+  .phase::before{
+    content:"";
+    position:absolute;
+    right:-31px; top:4px;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--indigo-bright);
+  }
+  .phase.dim::before{border-color:var(--slate);}
+  .phase-week{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--slate);
+    letter-spacing:.04em;
+    direction:ltr; unicode-bidi:embed;
+    display:inline-block;
+  }
+  .phase h3{
+    font-size:18px; font-weight:700; color:var(--paper);
+    margin:6px 0 8px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    direction:ltr;
+    justify-content:flex-end;
+    text-align:right;
+  }
+  .badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#0E0C2C;
+    background:var(--cyan);
+    padding:3px 9px;
+    border-radius:5px;
+    font-weight:700;
+  }
+  .badge.alt{background:var(--slate); color:#0E0C2C;}
+  .phase p{font-size:15px; color:var(--slate); max-width:600px;}
+  .bullets{
+    list-style:none;
+    margin-top:4px;
+    max-width:520px;
+    direction:ltr;
+    text-align:right;
+  }
+  .bullets li{
+    position:relative;
+    padding-right:18px;
+    margin-bottom:7px;
+    font-size:14.5px;
+    color:var(--slate);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .bullets li::before{
+    content:"•";
+    position:absolute;
+    right:0;
+    color:var(--cyan);
+    font-weight:700;
+  }
+  .bullets li:last-child{margin-bottom:0;}
+
+  .note-box{
+    margin-top:38px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-right:3px solid var(--cyan);
+    border-radius:8px;
+    padding:18px 20px;
+  }
+  .note-box p{font-size:14.5px; color:var(--slate);}
+  .note-box b{color:var(--paper);}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    padding:66px 0 90px;
+    text-align:center;
+    border-bottom:none;
+    position:relative;
+  }
+  .cta h2{margin-top:0;}
+  .cta-box{
+    margin-top:26px;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    padding:34px 44px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+  }
+  .cta-line{font-size:15.5px; color:var(--slate);}
+  .cta-code{
+    font-family:'JetBrains Mono', monospace;
+    font-size:20px;
+    font-weight:700;
+    color:#0E0C2C;
+    background:var(--cyan);
+    padding:12px 30px;
+    border-radius:8px;
+    letter-spacing:.02em;
+  }
+  .signoff{margin-top:20px; color:var(--slate); font-size:13.5px;}
+  .signoff b{color:var(--paper);}
+
+  .whatsapp-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:6px;
+    padding:12px 26px;
+    background:#25D366;
+    color:#0E0C2C;
+    font-weight:700;
+    font-size:15px;
+    border-radius:8px;
+    text-decoration:none;
+    direction:rtl;
+    transition:opacity 0.15s ease;
+  }
+  .whatsapp-btn:hover{opacity:0.88;}
+  .whatsapp-btn svg{flex:none;}
+
+  @media (max-width:640px){
+    .meta-chip{min-width:100px; padding:10px 14px;}
+    .logo-row svg{width:160px;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="grid-bg"></div>
+    <svg class="edges" viewBox="0 0 1000 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#22D3EE" stroke-width="2" stroke-dasharray="3 9" opacity="0.4" fill="none">
+        <line x1="40" y1="200" x2="260" y2="60"/>
+        <line x1="260" y1="60" x2="480" y2="170"/>
+        <line x1="480" y1="170" x2="700" y2="50"/>
+        <line x1="700" y1="50" x2="960" y2="150"/>
+      </g>
+      <g fill="#8B7CF6">
+        <circle cx="40" cy="200" r="5"/>
+        <circle cx="260" cy="60" r="5"/>
+        <circle cx="480" cy="170" r="5"/>
+        <circle cx="700" cy="50" r="5"/>
+        <circle cx="960" cy="150" r="5"/>
+      </g>
+    </svg>
+
+    <div class="wrap">
+      <div class="logo-row">
+        <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(8.73,28.33) scale(0.5467)">
+            <g stroke="#22D3EE" stroke-width="3.5" stroke-dasharray="3 9" opacity="0.4" fill="none" stroke-linecap="round">
+              <line x1="111.28" y1="164.02" x2="38.9" y2="77.77"/>
+              <line x1="67.5" y1="156.29" x2="111.28" y2="35.98"/>
+            </g>
+            <g stroke="#8B7CF6" stroke-width="7" fill="none" stroke-linecap="round">
+              <line x1="149.79" y1="141.79" x2="111.28" y2="164.02"/>
+              <line x1="111.28" y1="164.02" x2="67.5" y2="156.29"/>
+              <line x1="67.5" y1="156.29" x2="38.9" y2="122.23"/>
+              <line x1="38.9" y1="122.23" x2="38.9" y2="77.77"/>
+              <line x1="38.9" y1="77.77" x2="67.5" y2="43.71"/>
+              <line x1="67.5" y1="43.71" x2="111.28" y2="35.98"/>
+              <line x1="111.28" y1="35.98" x2="149.79" y2="58.21"/>
+            </g>
+            <g stroke="#14123A" stroke-width="5">
+              <circle cx="111.28" cy="164.02" r="14" fill="#8B7CF6"/>
+              <circle cx="67.5" cy="156.29" r="14" fill="#8B7CF6"/>
+              <circle cx="38.9" cy="122.23" r="14" fill="#8B7CF6"/>
+              <circle cx="38.9" cy="77.77" r="14" fill="#8B7CF6"/>
+              <circle cx="67.5" cy="43.71" r="14" fill="#8B7CF6"/>
+              <circle cx="111.28" cy="35.98" r="14" fill="#8B7CF6"/>
+              <circle cx="149.79" cy="141.79" r="17" fill="#22D3EE"/>
+              <circle cx="149.79" cy="58.21" r="17" fill="#22D3EE"/>
+            </g>
+          </g>
+          <g font-family="Arial, Helvetica, sans-serif">
+            <text x="96" y="83" dominant-baseline="central" font-size="56" font-weight="700" letter-spacing="0.5">
+              <tspan fill="#F5F6FB">omple</tspan><tspan fill="#8B7CF6" font-style="italic">x</tspan><tspan fill="#F5F6FB">ity</tspan>
+            </text>
+            <text x="33" y="150" font-family="'Courier New', Courier, monospace" font-size="13" font-weight="600" fill="#9BA3C4" letter-spacing="0.5">// academy of algorithms &amp; data structures</text>
+          </g>
+        </svg>
+      </div>
+
+      <span class="eyebrow mono">WEEK ONE IS FREE</span>
+      <div class="tagline">مش بس هنعلمك تكتب كود.<br>هنعلمك تفكر إزاي <em>قبل</em> ما تكتب أي سطر.</div>
+      <p class="sub">احضر أول محاضرة من غير أي دفع. وبعدها إنت اللي هتقرر لو هتكمل قبل ما يبدأ الأسبوع التاني.</p>
+
+      <div class="meta-row">
+        <div class="meta-chip"><b>4 شهور</b><span>مدة الكورس (16 أسبوع)</span></div>
+        <div class="meta-chip"><b>أسبوعيًا</b><span>معدل الحضور</span></div>
+        <div class="meta-chip"><b>4 ساعات</b><span>مدة المحاضرة</span></div>
+        <div class="meta-chip"><b>الأسبوع الأول</b><span>مجاني بالكامل</span></div>
+        <div class="meta-chip"><b>مشروعين</b><span>لبناء الـPortfolio</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CURRICULUM -->
+  <section>
+    <div class="wrap">
+            <h2>من الصفر... لحد أول مشروعين حقيقيين</h2>
+      <p class="sec-desc">16 محاضرة أسبوعية، كل واحدة مبنية على اللي قبلها. والأولى عندنا هدية.</p>
+
+      <div class="lecture-divider" style="margin-top:28px;">
+        <span class="dot"></span>
+        <p><b>في كل أسبوع:</b> تمرين حل مشكلات (Problem Solving) بجانب موضوع الأسبوع. مش موضوع بيتقال مرة وخلاص، ده حاجة ماشية من الأسبوع الأول لحد آخر أسبوع.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="phase">
+          <div class="phase-week">WEEK 01</div>
+          <h3>Course Overview + How Programming Works <span class="badge">Free</span></h3>
+          <p>هنبدأ بجولة صريحة على الكورس كله: هتعمل إيه، الأسابيع مقسمة إزاي، ومين المفروض ينضم. وبعدها هنبدأ فعليًا: إزاي لغات البرمجة شغالة، الفرق بين الـCompiler والـInterpreter، الـI/O والعمليات، والمتغيرات (Variables). مفيش أي دفع مطلوب عشان تحضر، وإنت اللي هتقرر لو هتكمل قبل ما يبدأ الأسبوع التاني.</p>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 02 – 05</div>
+          <h3>Fundamentals</h3>
+          <ul class="bullets">
+            <li>If Conditions</li>
+            <li>Loops</li>
+            <li>Arrays</li>
+            <li>Functions</li>
+            <li>Pointers</li>
+            <li>Recursion</li>
+            <li>Debugging</li>
+            <li>Clean Code Principles</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 06 – 08</div>
+          <h3>Object-Oriented Programming <span class="badge">OOP</span></h3>
+          <ul class="bullets">
+            <li>Why We Need OOP + OOP Fundamentals</li>
+            <li>Encapsulation</li>
+            <li>Abstraction</li>
+            <li>Inheritance</li>
+            <li>Polymorphism</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 09 – 10</div>
+          <h3>SOLID Principles</h3>
+          <ul class="bullets">
+            <li>Single Responsibility</li>
+            <li>Open for Extension, Closed for Modification</li>
+            <li>Liskov Substitution</li>
+            <li>Interface Segregation</li>
+            <li>Dependency Injection</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 11</div>
+          <h3>Intro to Design Patterns</h3>
+          <ul class="bullets">
+            <li>Why Do We Need Design Patterns</li>
+            <li>Singleton Pattern</li>
+            <li>Factory Pattern</li>
+          </ul>
+        </div>
+
+        <div class="phase dim">
+          <div class="phase-week">WEEK 12</div>
+          <h3>Intro to Algorithms & Data Structures</h3>
+          <ul class="bullets">
+            <li>Big-O Notation</li>
+            <li>Binary Search</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 13</div>
+          <h3>AI + Vibe Coding</h3>
+          <ul class="bullets">
+            <li>Using AI Agents in Your Workflow</li>
+            <li>Using MCPs</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-week">WEEK 14 – 16</div>
+          <h3>Two Real Projects <span class="badge">Portfolio</span></h3>
+          <ul class="bullets">
+            <li>Project 1: Library Management System (CLI)</li>
+            <li>Project 2: AI Agent with MCP Integration</li>
+            <li>Code Review & Feedback</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <p><b>ملاحظة سريعة:</b> الكورس ده بيغطي الأساسيات اللي أي مهندس برمجيات محتاجها، أيًا كان مساره بعد كده. التخصص العميق في Algorithms & Data Structures هيبقى كورس منفصل، لأنه موضوع مستاهل وقت وتركيز لوحده.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="grid-bg" style="mask-image:linear-gradient(to top, black, transparent 80%); -webkit-mask-image:linear-gradient(to top, black, transparent 80%);"></div>
+    <div class="wrap">
+            <h2>احضر الأسبوع الأول مجانًا</h2>
+      <a href="https://wa.me/201153383255?text=%D8%B9%D8%A7%D9%88%D8%B2%20%D8%A7%D8%B9%D8%B1%D9%81%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D9%83%D9%88%D8%B1%D8%B3" target="_blank" rel="noopener" class="whatsapp-btn" style="margin-top:28px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.472-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.9.523 3.68 1.432 5.207L2 22l4.929-1.393A9.947 9.947 0 0012.001 22C17.523 22 22 17.522 22 12S17.523 2 12.001 2zm0 18.02c-1.658 0-3.211-.457-4.539-1.253l-.326-.194-3.09.873.87-3.055-.213-.334A7.976 7.976 0 014.02 12c0-4.406 3.575-7.98 7.981-7.98 4.406 0 7.981 3.574 7.981 7.98 0 4.406-3.575 7.98-7.981 7.98z"/></svg>
+        <span>انضم عن طريق واتساب</span>
+      </a>
+      <p class="signoff"><b>Sofyan</b>، Complexity</p>
+    </div>
+  </div>
+
+</body>
+</html>
