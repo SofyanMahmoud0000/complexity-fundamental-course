@@ -226,6 +226,95 @@
   .note-box p{font-size:14.5px; color:var(--slate);}
   .note-box b{color:var(--paper);}
 
+  /* ---------- SLIDER ---------- */
+  .slider-head{
+    direction:ltr;
+    display:flex; align-items:center; justify-content:center;
+    gap:18px;
+    margin-top:32px;
+  }
+  .nav-btn{
+    flex:none;
+    width:38px; height:38px;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.15s ease, opacity 0.15s ease;
+  }
+  .nav-btn:hover{background:var(--card-2);}
+  .nav-btn:disabled{opacity:0.35; cursor:default;}
+  .nav-btn:disabled:hover{background:var(--card);}
+  .course-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--cyan);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.28);
+    border-radius:999px;
+    padding:8px 20px;
+    min-width:260px;
+    text-align:center;
+  }
+  .slider-viewport{
+    overflow:hidden;
+    margin-top:8px;
+    transition:height 0.35s ease;
+  }
+  .slider-track{
+    direction:ltr;
+    display:flex;
+    align-items:flex-start;
+    transition:transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  .slide{
+    flex:0 0 100%;
+    max-width:100%;
+    direction:rtl;
+    padding:0 18px;
+    box-sizing:border-box;
+  }
+  .dots{
+    display:flex; justify-content:center; gap:8px;
+    margin-top:24px;
+  }
+  .dot-ind{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--line);
+    cursor:pointer;
+    transition:background 0.15s ease, transform 0.15s ease;
+  }
+  .dot-ind.active{background:var(--cyan); transform:scale(1.3);}
+
+  .coming-soon{
+    margin-top:40px;
+    text-align:center;
+    padding:70px 30px;
+    background:var(--card);
+    border:1px dashed rgba(139,124,246,0.4);
+    border-radius:16px;
+  }
+  .coming-badge{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:#0E0C2C;
+    background:var(--indigo-bright);
+    padding:5px 14px;
+    border-radius:999px;
+    font-weight:700;
+    margin-bottom:18px;
+    direction:ltr;
+  }
+  .coming-soon h3{font-size:22px; font-weight:700; margin-bottom:12px;}
+  .coming-soon p{font-size:15px; color:var(--slate); max-width:480px; margin:0 auto;}
+
   /* ---------- CTA ---------- */
   .cta{
     padding:66px 0 90px;
@@ -339,7 +428,7 @@
       </div>
 
       <span class="eyebrow mono">WEEK ONE IS FREE</span>
-      <div class="tagline">مش بس هنعلمك تكتب كود.<br>هنعلمك تفكر إزاي <em>قبل</em> ما تكتب أي سطر.</div>
+      <div class="tagline">مش بس هنعلمك تكتب كود.<br>هنعلمك تفكر ازاي <em>قبل</em> ما تكتب اي سطر كود.</div>
       <p class="sub">احضر أول محاضرة من غير أي دفع. وبعدها إنت اللي هتقرر لو هتكمل قبل ما يبدأ الأسبوع التاني.</p>
 
       <div class="meta-row">
@@ -355,92 +444,121 @@
   <!-- CURRICULUM -->
   <section>
     <div class="wrap">
+      <div class="slider-head">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous course">‹</button>
+        <div class="course-pill" id="coursePill">Fundamentals Course</div>
+        <button class="nav-btn" id="nextBtn" aria-label="Next course">›</button>
+      </div>
+
+      <div class="slider-viewport" id="sliderViewport">
+        <div class="slider-track" id="sliderTrack">
+
+          <!-- SLIDE 1: FUNDAMENTALS -->
+          <div class="slide">
             <h2>من الصفر... لحد أول مشروعين حقيقيين</h2>
-      <p class="sec-desc">16 محاضرة أسبوعية، كل واحدة مبنية على اللي قبلها. والأولى عندنا هدية.</p>
+            <p class="sec-desc">16 محاضرة أسبوعية، كل واحدة مبنية على اللي قبلها. والأولى عندنا هدية.</p>
 
-      <div class="lecture-divider" style="margin-top:28px;">
-        <span class="dot"></span>
-        <p><b>في كل أسبوع:</b> تمرين حل مشكلات (Problem Solving) بجانب موضوع الأسبوع. مش موضوع بيتقال مرة وخلاص، ده حاجة ماشية من الأسبوع الأول لحد آخر أسبوع.</p>
+            <div class="lecture-divider" style="margin-top:20px;">
+              <span class="dot"></span>
+              <p><b>في كل أسبوع:</b> تمرين حل مشكلات (Problem Solving) بجانب موضوع الأسبوع. مش موضوع بيتقال مرة وخلاص، ده حاجة ماشية من الأسبوع الأول لحد آخر أسبوع.</p>
+            </div>
+
+            <div class="timeline">
+              <div class="phase">
+                <div class="phase-week">WEEK 01</div>
+                <h3>Course Overview + How Programming Works <span class="badge">Free</span></h3>
+                <p>هنبدأ بجولة صريحة على الكورس كله: هتعمل إيه، الأسابيع مقسمة إزاي، ومين المفروض ينضم. وبعدها هنبدأ فعليًا: إزاي لغات البرمجة شغالة، الفرق بين الـCompiler والـInterpreter، الـI/O والعمليات، والمتغيرات (Variables). مفيش أي دفع مطلوب عشان تحضر، وإنت اللي هتقرر لو هتكمل قبل ما يبدأ الأسبوع التاني.</p>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 02 – 05</div>
+                <h3>Fundamentals</h3>
+                <ul class="bullets">
+                  <li>If Conditions</li>
+                  <li>Loops</li>
+                  <li>Data Types in Details</li>
+                  <li>Pointers</li>
+                  <li>Functions</li>
+                  <li>Recursion</li>
+                  <li>Debugging</li>
+                  <li>Clean Code Principles</li>
+                  <li>File Handling</li>
+                  <li>Error &amp; Exception Handling</li>
+                </ul>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 06 – 08</div>
+                <h3>Object-Oriented Programming <span class="badge">OOP</span></h3>
+                <ul class="bullets">
+                  <li>Why We Need OOP + OOP Fundamentals</li>
+                  <li>Encapsulation</li>
+                  <li>Abstraction</li>
+                  <li>Inheritance</li>
+                  <li>Polymorphism</li>
+                </ul>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 09</div>
+                <h3>Visit Python</h3>
+                <ul class="bullets">
+                  <li>Solve Real Problems in Python</li>
+                  <li>The Proof: Anyone Who Understands the Basics Can Write Any Language</li>
+                </ul>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 10 – 12</div>
+                <h3>Intro to Algorithms & Data Structures</h3>
+                <ul class="bullets">
+                  <li>Big-O Notation</li>
+                  <li>Stack</li>
+                  <li>Queue</li>
+                  <li>Binary Search</li>
+                </ul>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 13</div>
+                <h3>AI + Vibe Coding</h3>
+                <ul class="bullets">
+                  <li>Using AI Agents in Your Workflow</li>
+                  <li>Using MCPs</li>
+                </ul>
+              </div>
+
+              <div class="phase">
+                <div class="phase-week">WEEK 14 – 16</div>
+                <h3>Two Real Projects <span class="badge">Portfolio</span></h3>
+                <ul class="bullets">
+                  <li>Project 1: Library Management System (CLI)</li>
+                  <li>Project 2: Sudoku Solver (Built with AI-Assisted Coding)</li>
+                  <li>Code Review & Feedback</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="note-box">
+              <p><b>ملاحظة سريعة:</b> الكورس ده بيغطي الأساسيات اللي أي مهندس برمجيات محتاجها، أيًا كان مساره بعد كده. التخصص العميق في Algorithms & Data Structures هيبقى كورس منفصل، لأنه موضوع مستاهل وقت وتركيز لوحده.</p>
+            </div>
+          </div>
+
+          <!-- SLIDE 2: ADS SPECIALIZATION (COMING SOON) -->
+          <div class="slide">
+            <div class="coming-soon">
+              <div class="coming-badge">Coming Soon</div>
+              <h3>Algorithms & Data Structures Specialization</h3>
+              <p>كورس منفصل ومتخصص بالكامل في الخوارزميات وهياكل البيانات، لمين حابب يتعمق أكتر بعد الأساسيات. التفاصيل هتتضاف هنا أول ما الكورس يتجهز.</p>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <div class="timeline">
-        <div class="phase">
-          <div class="phase-week">WEEK 01</div>
-          <h3>Course Overview + How Programming Works <span class="badge">Free</span></h3>
-          <p>هنبدأ بجولة صريحة على الكورس كله: هتعمل إيه، الأسابيع مقسمة إزاي، ومين المفروض ينضم. وبعدها هنبدأ فعليًا: إزاي لغات البرمجة شغالة، الفرق بين الـCompiler والـInterpreter، الـI/O والعمليات، والمتغيرات (Variables). مفيش أي دفع مطلوب عشان تحضر، وإنت اللي هتقرر لو هتكمل قبل ما يبدأ الأسبوع التاني.</p>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 02 – 05</div>
-          <h3>Fundamentals</h3>
-          <ul class="bullets">
-            <li>If Conditions</li>
-            <li>Loops</li>
-            <li>Data Types in Details</li>
-            <li>Pointers</li>
-            <li>Functions</li>
-            <li>Recursion</li>
-            <li>Debugging</li>
-            <li>Clean Code Principles</li>
-            <li>File Handling</li>
-            <li>Error &amp; Exception Handling</li>
-          </ul>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 06 – 08</div>
-          <h3>Object-Oriented Programming <span class="badge">OOP</span></h3>
-          <ul class="bullets">
-            <li>Why We Need OOP + OOP Fundamentals</li>
-            <li>Encapsulation</li>
-            <li>Abstraction</li>
-            <li>Inheritance</li>
-            <li>Polymorphism</li>
-          </ul>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 09</div>
-          <h3>Visit Python</h3>
-          <ul class="bullets">
-            <li>Solve Real Problems in Python</li>
-            <li>The Proof: Anyone Who Understands the Basics Can Write Any Language</li>
-          </ul>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 10 – 12</div>
-          <h3>Intro to Algorithms & Data Structures</h3>
-          <ul class="bullets">
-            <li>Big-O Notation</li>
-            <li>Stack</li>
-            <li>Queue</li>
-            <li>Binary Search</li>
-          </ul>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 13</div>
-          <h3>AI + Vibe Coding</h3>
-          <ul class="bullets">
-            <li>Using AI Agents in Your Workflow</li>
-            <li>Using MCPs</li>
-          </ul>
-        </div>
-
-        <div class="phase">
-          <div class="phase-week">WEEK 14 – 16</div>
-          <h3>Two Real Projects <span class="badge">Portfolio</span></h3>
-          <ul class="bullets">
-            <li>Project 1: Library Management System (CLI)</li>
-            <li>Project 2: Sudoku Solver (Built with AI-Assisted Coding)</li>
-            <li>Code Review & Feedback</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <p><b>ملاحظة سريعة:</b> الكورس ده بيغطي الأساسيات اللي أي مهندس برمجيات محتاجها، أيًا كان مساره بعد كده. التخصص العميق في Algorithms & Data Structures هيبقى كورس منفصل، لأنه موضوع مستاهل وقت وتركيز لوحده.</p>
+      <div class="dots" id="dots">
+        <span class="dot-ind active" data-i="0"></span>
+        <span class="dot-ind" data-i="1"></span>
       </div>
     </div>
   </section>
@@ -450,7 +568,7 @@
     <div class="grid-bg" style="mask-image:linear-gradient(to top, black, transparent 80%); -webkit-mask-image:linear-gradient(to top, black, transparent 80%);"></div>
     <div class="wrap">
             <h2>احضر الأسبوع الأول مجانًا</h2>
-      <a href="https://wa.me/201153383255?text=%D8%B9%D8%A7%D9%88%D8%B2%20%D8%A7%D8%B9%D8%B1%D9%81%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D9%83%D9%88%D8%B1%D8%B3" target="_blank" rel="noopener" class="whatsapp-btn" style="margin-top:28px;">
+      <a href="https://wa.me/201132308180?text=%D8%B9%D8%A7%D9%88%D8%B2%20%D8%A7%D8%B9%D8%B1%D9%81%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A7%D9%84%D9%83%D9%88%D8%B1%D8%B3" target="_blank" rel="noopener" class="whatsapp-btn" style="margin-top:28px;">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.03-.967-.273-.099-.472-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.9.523 3.68 1.432 5.207L2 22l4.929-1.393A9.947 9.947 0 0012.001 22C17.523 22 22 17.522 22 12S17.523 2 12.001 2zm0 18.02c-1.658 0-3.211-.457-4.539-1.253l-.326-.194-3.09.873.87-3.055-.213-.334A7.976 7.976 0 014.02 12c0-4.406 3.575-7.98 7.981-7.98 4.406 0 7.981 3.574 7.981 7.98 0 4.406-3.575 7.98-7.981 7.98z"/></svg>
         <span>انضم عن طريق واتساب</span>
       </a>
@@ -458,5 +576,40 @@
     </div>
   </div>
 
+<script>
+  (function(){
+    const track = document.getElementById('sliderTrack');
+    const viewport = document.getElementById('sliderViewport');
+    const slides = track.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot-ind');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pill = document.getElementById('coursePill');
+    const titles = ['Fundamentals Course', 'Algorithms & Data Structures (Coming Soon)'];
+    let idx = 0;
+    const total = slides.length;
+
+    function resize(){
+      viewport.style.height = slides[idx].offsetHeight + 'px';
+    }
+
+    function update(){
+      track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      pill.textContent = titles[idx] || '';
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === total - 1;
+      resize();
+    }
+
+    prevBtn.addEventListener('click', () => { if (idx > 0){ idx--; update(); } });
+    nextBtn.addEventListener('click', () => { if (idx < total - 1){ idx++; update(); } });
+    dots.forEach((d, i) => d.addEventListener('click', () => { idx = i; update(); }));
+    window.addEventListener('resize', resize);
+    window.addEventListener('load', resize);
+
+    update();
+  })();
+</script>
 </body>
 </html>
